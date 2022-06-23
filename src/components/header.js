@@ -1,41 +1,212 @@
-import * as React from "react"
-import PropTypes from "prop-types"
+import React, { useState, useEffect } from 'react';
 import { Link } from "gatsby"
+// import * as styles from "./header.scss"
+import { FiMail } from "@react-icons/all-files/Fi/FiMail"
+import { FiInstagram } from "@react-icons/all-files/Fi/FiInstagram"
+import { StaticImage } from "gatsby-plugin-image"
+import Rellax from "rellax"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      margin: `0 auto`,
-      padding: `var(--space-4) var(--size-gutter)`,
-      display: `flex`,
-      alignItems: `center`,
-      justifyContent: `space-between`,
-    }}
-  >
-    <Link
-      to="/"
-      style={{
-        fontSize: `var(--font-sm)`,
-        textDecoration: `none`,
-      }}
-    >
-      {siteTitle}
-    </Link>
-    <img
-      alt="Gatsby logo"
-      height={20}
-      style={{ margin: 0 }}
-      src="data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 107 28' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3CclipPath id='a'%3E%3Cpath d='m0 0h106.1v28h-106.1z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23a)'%3E%3Cg fill='%23000'%3E%3Cpath clip-rule='evenodd' d='m89 11.7c-.8 0-2.2.2-3.2 1.6v-8.10005h-2.8v16.80005h2.7v-1.3c1.1 1.5 2.6 1.5999 3.2 1.5999 3 0 5-2.2999 5-5.2999s-2-5.3-4.9-5.3zm-.7 2.5c1.7 0 2.8 1.2 2.8 2.8s-1.2 2.8-2.8 2.8c-1.7 0-2.8-1.2-2.8-2.8s1.1-2.8 2.8-2.8z' fill-rule='evenodd'/%3E%3Cpath d='m71.2 21.9999v-7.6h1.9v-2.4h-1.9v-3.40005h-2.8v3.40005h-1.1v2.4h1.1v7.6z'/%3E%3Cpath clip-rule='evenodd' d='m65.6999 12h-2.9v1.3c-.8999-1.5-2.4-1.6-3.2-1.6-2.9 0-4.8999 2.4-4.8999 5.3s1.9999 5.2999 5.0999 5.2999c.8 0 2.1001-.0999 3.1001-1.5999v1.3h2.7999zm-5.1999 7.8c-1.7001 0-2.8-1.2-2.8-2.8s1.2-2.8 2.8-2.8c1.7 0 2.7999 1.2 2.7999 2.8s-1.1999 2.8-2.7999 2.8z' fill-rule='evenodd'/%3E%3Cpath d='m79.7001 14.4c-.7-.6-1.3-.7-1.6-.7-.7 0-1.1.3-1.1.8 0 .3.1.6.9.9l.7.2c.1261.0472.2621.0945.4037.1437.7571.2632 1.6751.5823 2.0963 1.2563.3.4.5 1 .5 1.7 0 .9-.3 1.8-1.1 2.5s-1.8 1.0999-3 1.0999c-2.1 0-3.2-.9999-3.9-1.6999l1.5-1.7c.6.6 1.4 1.2 2.2 1.2s1.4-.4 1.4-1.1c0-.6-.5-.9-.9-1l-.6-.2c-.0687-.0295-.1384-.0589-.2087-.0887l-.0011-.0004c-.6458-.2729-1.3496-.5704-1.8902-1.1109-.5-.5-.8-1.1-.8-1.9 0-1 .5-1.8 1-2.3.8-.6 1.8-.7 2.6-.7.7 0 1.9.1 3.2 1.1z'/%3E%3Cpath d='m98.5 20.5-4.8-8.5h3.3l3.1 5.7 2.8-5.7h3.2l-8 15.3h-3.2z'/%3E%3Cpath d='m47 13.7h7c0 .0634.01.1267.0206.1932.0227.1435.0477.3018-.0206.5068 0 4.5-3.4 8.1-8 8.1s-8-3.6-8-8.1c0-4.49995 3.6-8.09995 8-8.09995 2.6 0 5 1.2 6.5 3.3l-2.3 1.49995c-1-1.29995-2.6-2.09995-4.2-2.09995-2.9 0-4.9 2.49995-4.9 5.39995s2.1 5.3 5 5.3c2.6 0 4-1.3 4.6-3.2h-3.7z'/%3E%3C/g%3E%3Cpath d='m18 14h7c0 5.2-3.7 9.6-8.5 10.8l-13.19995-13.2c1.1-4.9 5.5-8.6 10.69995-8.6 3.7 0 6.9 1.8 8.9 4.5l-1.5 1.3c-1.7-2.3-4.4-3.8-7.4-3.8-3.9 0-7.29995 2.5-8.49995 6l11.49995 11.5c2.9-1 5.1-3.5 5.8-6.5h-4.8z' fill='%23fff'/%3E%3Cpath d='m6.2 21.7001c-2.1-2.1-3.2-4.8-3.2-7.6l10.8 10.8c-2.7 0-5.5-1.1-7.6-3.2z' fill='%23fff'/%3E%3Cpath d='m14 0c-7.7 0-14 6.3-14 14s6.3 14 14 14 14-6.3 14-14-6.3-14-14-14zm-7.8 21.8c-2.1-2.1-3.2-4.9-3.2-7.6l10.9 10.8c-2.8-.1-5.6-1.1-7.7-3.2zm10.2 2.9-13.1-13.1c1.1-4.9 5.5-8.6 10.7-8.6 3.7 0 6.9 1.8 8.9 4.5l-1.5 1.3c-1.7-2.3-4.4-3.8-7.4-3.8-3.9 0-7.2 2.5-8.5 6l11.5 11.5c2.9-1 5.1-3.5 5.8-6.5h-4.8v-2h7c0 5.2-3.7 9.6-8.6 10.7z' fill='%237026b9'/%3E%3C/g%3E%3C/svg%3E"
-    />
-  </header>
-)
+const Header = () => {
+  const [show, navButtonClick] = useState(false)
+  function mailIconHidden() {
+    const mailIcon = document.getElementById("mailIcon")
+    mailIcon.classList.add(`opacity-5`)
+    mailIcon.classList.remove('opacity-100')
+  }
+  function mailIconAppear() {
+    const mailIcon = document.getElementById("mailIcon")
+    mailIcon.classList.add(`opacity-100`)
+    mailIcon.classList.remove(`opacity-5`)
+  }
+  function instaIconHidden() {
+    const instaIcon = document.getElementById("instaIcon")
+    instaIcon.classList.add(`opacity-5`)
+    instaIcon.classList.remove('opacity-100')
+  }
+  function instaIconApper() {
+    const instaIcon = document.getElementById("instaIcon")
+    instaIcon.classList.add(`opacity-100`)
+    instaIcon.classList.remove(`opacity-5`)
+  }
+  function rellaxStart() {
+    var rellax = new Rellax('.rellax', {
+      speed: -6,
+      center: true,
+      // wrapper: null,
+      round: true,
+      vertical: true
+    })
+  }
+  useEffect(()=>{
+    rellaxStart()
+  }, [])
+  
+  return (
+    <>
+      <nav 
+        id="spNav" 
+        className={show ? "absolute w-[85%] h-[100vh] ease-out duration-300 bg-mainWhite openSans z-30"
+        : "absolute w-[85%] h-[100vh] ease-out duration-300 bg-mainWhite openSans z-20 -translate-x-full"
+      }>
+        <ul className="p-12">
+          <li className="tracking-widest mb-8">
+            <Link to="/">
+              HOME
+            </Link>
+          </li>
+          <li className="tracking-widest mb-8">
+            <Link to="services">
+              SERVICES
+            </Link>
+          </li>
+          <li className="tracking-widest mb-8">
+            <Link to="gallery">
+              GALLERY
+            </Link>
+          </li>
+          <li className="tracking-widest">
+            <Link to="contact">
+              CONTACT
+            </Link>
+          </li>
+        </ul>
+      </nav>
+      <header 
+        className={show ? "bg-mainWhite text-white transition ease-out duration-300 relative z-20"
+          :"bg-main text-white transition ease-out duration-300 relative z-20"
+        }>
+        <div className="container h-[60px] flex justify-between items-center px-4 mx-auto">
+          <Link to="/" className="openSans font-extrabold text-[1.5rem] tracking-[.25em] lg:text-[1.8rem]">
+            NATSUP
+          </Link>
+          <div className="w-8 h-8">
+            <div className="hidden lg:flex w-8 h-8">
+              <a id="instaIcon" className="transition ease-out duration-300" href="https://google.com" onMouseEnter={mailIconHidden} onMouseLeave={mailIconAppear}>
+                <FiInstagram className="w-5 h-5 mt-2 mr-4 opacity-100"/>
+              </a>
+              <a id="mailIcon" className="transition ease-out duration-300" href="https://google.com" onMouseEnter={instaIconHidden} onMouseLeave={instaIconApper}>
+                <FiMail className="w-5 h-5 mt-2 opacity-100"/>
+              </a>
+            </div>
+            <button 
+              className={show ? "absolute cursor-pointer z-30 opacity-0 invisible lg:hidden"
+              : "absolute cursor-pointer z-30 lg:hidden"}
+              onClick={() =>  navButtonClick(!show)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" d="M4 8h16M4 16h16" />
+              </svg>
+            </button>
+            <button 
+              className={show ? "absolute cursor-pointer z-30 lg:hidden transition ease-out duration-300"
+              : "absolute cursor-pointer z-30 opacity-0 invisible lg:hidden transition ease-out duration-300"}
+              onClick={() =>  navButtonClick(!show)}
+            >
+              <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" viewBox="0 0 24 24" width="24px" height="24px">
+                <path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+      <div className="hero relative">
+        <div className="absolute h-[100vh] w-full rellax">
+          <div className="bg-[#F5F0EB] h-[510px] w-full -mt-[8rem]"></div>
+          <div className="h-[200px] w-full relative">
+            <div>
+              <StaticImage
+                className="h-[2.6rem] w-full mt-4 opacity-20 absolute top-0 left-0 lg:mt-8 lg:h-[3.4rem]"
+                src="../images/check.svg"
+                loading="eager"
+                quality={95}
+                formats={["auto", "webp", "avif"]}
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+        <nav className="hidden container mx-auto relative z-30 lg:block">
+          <ul className="flex justify-end pt-8 text-[12px] openSans w-full josefin font-semibold tracking-widest">
+            <li className="ml-12 border-transparent border-b-[1px] border-b-transparent transition ease-out duration-300 hover:text-[#af6d55] hover:border-b-[#af6d55]">
+              <a href="#">
+                ABOUT
+              </a>
+            </li>
+            <li className="ml-12 border-transparent border-b-[1px] border-b-transparent transition ease-out duration-300 hover:text-[#af6d55] hover:border-b-[#af6d55]">
+              <a href="#">
+                SERVICE
+              </a>
+            </li>
+            <li className="ml-12 border-transparent border-b-[1px] border-b-transparent transition ease-out duration-300 hover:text-[#af6d55] hover:border-b-[#af6d55]">
+              <a href="#">
+                GALLERY
+              </a>
+            </li>
+            <li className="ml-12 border-transparent border-b-[1px] border-b-transparent transition ease-out duration-300 hover:text-[#af6d55] hover:border-b-[#af6d55]">
+              <a href="#">
+                BLOG
+              </a>
+            </li>
+            <li className="ml-12 border-transparent border-b-[1px] border-b-transparent transition ease-out duration-300 hover:text-[#af6d55] hover:border-b-[#af6d55]">
+              <a href="#">
+                CONTACT
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div className="hero-main relative">
+          <div className="flex flex-col items-center justify-center pt-12 pb-12 bg-transparent lg:pt-20">
+            <StaticImage
+              class="w-[90%] lg:w-[70%] bg-transparent"
+              src="../images/natupi-hero.png"
+              loading="eager"
+              placeholder="blurred"
+              width={1000}
+              quality={95}
+              formats={["auto", "webp", "avif"]}
+              alt="hero-pic"
+            />
+          </div>
+          <div className="hero-text w-[90%] mx-auto md:w-[85%]">
+            <div className="sm:flex justify-evenly">
+              <h2 className="cormorant font-medium text-[3rem] text-[#B06D55] leading-[3.5rem] sm:w-[40%] md:text-[5rem] md:leading-[5rem]">
+                Capturing the<br/>
+                moments.<br/>
+              </h2>
+              <div className="sm:w-[40%]">
+                <h3 className="openSans mt-8 font-semibold tracking-widest sm:mt-0 md:text-[1.2rem] md:font-semibold">
+                  STROMG INTRO HEADING<br className="md:hidden"/>
+                  HERE
+                </h3>
+                <p className="openSans mt-4 leading-[1.6rem] text-[14px] tracking-widest md:text-[1rem]">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quidem dolorem temporibus quibusdam eius maxime!
+                </p>
+              </div>
+            </div>
+            <div className="sm:flex justify-evenly">
+              <StaticImage
+                className="h-[2rem] mt-8 opacity-70 sm:w-[40%] md:h-[2.5rem]"
+                src="../images/check.svg"
+                loading="eager"
+                quality={95}
+                formats={["auto", "webp", "avif"]}
+                alt=""
+              />
+              <div className="mt-8 text-center openSans tracking-widest sm:w-[40%]">
+                <Link to="/" className="block py-2 bg-[#D0C9C8] text-[12px] w-[200px] font-semibold  md:w-[200px] ">
+                  CONTACT ME&nbsp;&nbsp;&gt;&nbsp;&gt;
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
-
-Header.defaultProps = {
-  siteTitle: ``,
 }
 
 export default Header
+
+
+

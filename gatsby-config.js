@@ -1,11 +1,24 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
-    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
+    title: `Natsup-sugaring`,
+    description: `葛飾にあるシュガーリング脱毛サロンです。`,
+    author: `@natsup_sugaring`,
+    siteUrl: `http://natup-sugaring.com/`,
   },
   plugins: [
+    // {
+    //   resolve: `gatsby-plugin-google-fonts`,
+    //   options: {
+    //     fonts: [
+    //       `Open Sans`,
+    //       // `source sans pro\:400,400i,700` // you can also specify font weights and styles
+    //     ],
+    //     display: 'swap'
+    //   }
+    // },
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-sass`,
+    'gatsby-plugin-postcss',
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
     {

@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$mainColor: #C1A99A;
+$white: white;
+$brown: #B47A63;
+
+.bg-main {
+  background-color: $mainColor;
+}
+
+.bg-mainWhite {
+  background-color: $white;
+}
+
+.bg-brown {
+  background: $brown;
+}
+
+.text-main {
+  color: $mainColor;
+}
+
+.openSans {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.cormorant {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.josefin {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.ioTarget {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: .3s ease-in-out;
+  &.fadeIn {
+    opacity: 1;
+    transform: none;
+  }
+}
