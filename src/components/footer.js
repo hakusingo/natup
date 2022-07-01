@@ -6,7 +6,7 @@ const Footer = () => {
       <footer>
         © {new Date().getFullYear()} &middot; Built with
         {` `}
-        <a href="https://www.gatsbyjs.com">Gatsby</a>
+        <a href="https://www.gatsbyjs.com">Gatsbyで作ったよ</a>
       </footer>
     </>
   )
